@@ -1,6 +1,6 @@
 local library = {}
 
--- Patch 0.22
+-- Patch 0.23
 
 local MenuColors = {
     ['MenuAccent'] = Color3.fromRGB(255, 255, 255),
@@ -103,25 +103,6 @@ function library.changeMenuBind(Keybind)
         MenuBind = Enum.KeyCode[str]
     end
     print(MenuBind)
-end
-
-function library.SetMenuColor(MainColor, FadeColor)
-    local a,b = pcall(function()
-        MenuColors.MenuAccent = MainColor
-        MenuColors.MenuAccentFade = FadeColor
-    end)
-    if b then print(b) end
-
-    function renderColor()
-        runservice.RenderStepped:Connect(function()
-            print('rendering')
-            if not colorMain and not colorFadeAccent and not colorFadeAccent2 then return end
-            colorMain.BorderColor3 = MenuColors.MenuAccent
-            colorFadeAccent.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))}
-            colorFadeAccent2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, MenuColors.MenuAccentFade)}
-        end)
-    end
-    coroutine.wrap(renderColor)()
 end
 
 function library.new(library_title, cfg_location)
@@ -2601,6 +2582,27 @@ function element:add_color(color_default, has_transparency, color_callback)
     end)
 
     return color
+end
+
+function library.SetMenuColor(MainColor, FadeColor)
+    local a,b = pcall(function()
+        MenuColors.MenuAccent = MainColor
+        MenuColors.MenuAccentFade = FadeColor
+    end)
+    if b then print(b) end
+    function renderColor()
+        if not colorMain and not colorFadeAccent and not colorFadeAccent2 then return end
+        colorMain.Changed:Connect(function()
+            colorMain.BorderColor3 = MenuColors.MenuAccent
+        end)
+        colorFadeAccent.Changed:Connect(function()
+            colorFadeAccent.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))}
+        end)
+        colorFadeAccent2.Changed:Connect(function()
+            colorFadeAccent2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, MenuColors.MenuAccentFade)}
+        end)
+    end
+    coroutine.wrap(renderColor)()
 end
 
                            
