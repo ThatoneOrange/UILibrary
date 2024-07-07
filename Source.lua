@@ -2,6 +2,11 @@ local library = {}
 
 -- Patch 0.22
 
+library.MenuColors = {
+    ['Main'] = nil,
+    ['Fade'] = nil
+}
+
 local MenuColors = {
     ['MenuAccent'] = library.MenuColors['Main'] or Color3.fromRGB(255, 255, 255),
     ['MenuAccentFade'] = library.MenuColors['Fade'] or Color3.fromRGB(71, 71, 71)
