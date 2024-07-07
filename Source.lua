@@ -1,10 +1,10 @@
 local library = {}
 
--- Patch 0.1
+-- Patch 0.2
 
 local MenuColors = {
-    ['MenuAccent'] = Color3.fromRGB(0, 255, 4),
-    ['MenuAccentFade'] = Color3.fromRGB(0, 117, 2)
+    ['MenuAccent'] = Color3.fromRGB(0, 242, 255),
+    ['MenuAccentFade'] = Color3.fromRGB(0, 152, 161)
 }
 
 local KeybindsStateType = {
@@ -2577,7 +2577,8 @@ function element:add_color(color_default, has_transparency, color_callback)
     return color
 end
 
-                            
+                           
+
 
                         --//
 
