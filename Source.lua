@@ -1,15 +1,10 @@
 local library = {}
 
--- Patch 0.22
-
-library.MenuColors = {
-    ['Main'] = nil,
-    ['Fade'] = nil
-}
+-- Patch 0.21
 
 local MenuColors = {
-    ['MenuAccent'] = library.MenuColors['Main'] or Color3.fromRGB(255, 255, 255),
-    ['MenuAccentFade'] = library.MenuColors['Fade'] or Color3.fromRGB(71, 71, 71)
+    ['MenuAccent'] = Color3.fromRGB(255, 255, 255),
+    ['MenuAccentFade'] = Color3.fromRGB(71, 71, 71)
 }
 
 local KeybindsStateType = {
@@ -104,6 +99,14 @@ function library.changeMenuBind(Keybind)
         MenuBind = Enum.KeyCode[str]
     end
     print(MenuBind)
+end
+
+function library.SetMenuColor(MainColor, FadeColor)
+    local a,b = pcall(function()
+        MenuColors.MenuAccent = MainColor
+        MenuColors.MenuAccentFade = FadeColor
+    end)
+    if b then print(b) end
 end
 
 function library.new(library_title, cfg_location)
@@ -338,6 +341,7 @@ function library.new(library_title, cfg_location)
             end
             Tab.Visible = true
             selected_tab = TabButton
+            print(MenuColors.MenuAccent)
             library:tween(TabImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = MenuColors.MenuAccent})
         end)
         TabButton.MouseEnter:Connect(function()
