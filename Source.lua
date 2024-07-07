@@ -1,10 +1,10 @@
 local library = {}
 
--- Patch 0.21
+-- Patch 0.22
 
 local MenuColors = {
-    ['MenuAccent'] = Color3.fromRGB(255, 255, 255),
-    ['MenuAccentFade'] = Color3.fromRGB(71, 71, 71)
+    ['MenuAccent'] = library.MenuColors['Main'] or Color3.fromRGB(255, 255, 255),
+    ['MenuAccentFade'] = library.MenuColors['Fade'] or Color3.fromRGB(71, 71, 71)
 }
 
 local KeybindsStateType = {
@@ -99,14 +99,6 @@ function library.changeMenuBind(Keybind)
         MenuBind = Enum.KeyCode[str]
     end
     print(MenuBind)
-end
-
-function library.SetMenuColor(MainColor, FadeColor)
-    local a,b = pcall(function()
-        MenuColors.MenuAccent = MainColor
-        MenuColors.MenuAccentFade = FadeColor
-    end)
-    if b then print(b) end
 end
 
 function library.new(library_title, cfg_location)
