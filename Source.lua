@@ -1,5 +1,7 @@
 local library = {}
 
+-- Patch 0.1
+
 local MenuColors = {
     ['MenuAccent'] = Color3.fromRGB(0, 255, 4),
     ['MenuAccentFade'] = Color3.fromRGB(0, 117, 2)
@@ -96,6 +98,7 @@ function library.changeMenuBind(Keybind)
     else
         MenuBind = Enum.KeyCode[str]
     end
+    print(MenuBind)
 end
 
 function library.new(library_title, cfg_location)
