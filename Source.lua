@@ -1,6 +1,6 @@
 local library = {}
 
--- Patch 0.25
+-- Patch 0.21
 
 local MenuColors = {
     ['MenuAccent'] = Color3.fromRGB(255, 255, 255),
@@ -19,11 +19,7 @@ local MenuBind = Enum.KeyCode.Insert
 local TweenService = game:GetService("TweenService")
 function library:tween(...) TweenService:Create(...):Play() end
 
-local runservice = game:GetService('RunService')
-local colorMain, colorFadeAccent = nil, nil
-
 local uis = game:GetService("UserInputService")
-
 
 function library:create(Object, Properties, Parent)
     local Obj = Instance.new(Object)
@@ -106,11 +102,11 @@ function library.changeMenuBind(Keybind)
 end
 
 function library.SetMenuColor(MainColor, FadeColor)
-    local succes,err = pcall(function()
-        a.Value = MainColor
-        b.Value = FadeColor
+    local a,b = pcall(function()
+        MenuColors.MenuAccent = MainColor
+        MenuColors.MenuAccentFade = FadeColor
     end)
-    if err then print(err) end
+    if b then print(b) end
 end
 
 function library.new(library_title, cfg_location)
@@ -177,19 +173,6 @@ function library.new(library_title, cfg_location)
         Name = "unknown",
         IgnoreGuiInset = true,
     })
-    local newFolder = Instance.new('Folder')
-    newFolder.Name = 'MenuColors'
-    newFolder.Parent = ScreenGui
-    local a = Instance.new('Color3Value')
-    a.Name = 'MenuColorMain'
-    a.Parent = newFolder
-    a.Value = MenuColors.MenuAccent
-    local b = Instance.new('Color3Value')
-    a.Name = 'MenuColorFade'
-    a.Parent = newFolder
-    a.Value = MenuColors.MenuAccentFade
-    colorMain = a
-    colorFadeAccent = b
 
 --[[
     local Cursor = library:create("ImageLabel", {
@@ -240,11 +223,6 @@ function library.new(library_title, cfg_location)
         AutoButtonColor = false,
         Modal = true,
     }, ScreenGui)
-    a:GetPropertyChangedSignal('Value'):Connect(function()
-        ImageLabel.BorderColor3 = a.Value
-        MenuColors.MenuAccent = a.Value
-    end)
-
 
     function menu.GetPosition()
         return ImageLabel.Position
@@ -425,10 +403,6 @@ function library.new(library_title, cfg_location)
             local UIGradient = library:create("UIGradient", {
                 Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))},
             }, SectionDecoration)
-            a:GetPropertyChangedSignal('Value'):Connect(function()
-                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, a.Value), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))}
-                MenuColors.MenuAccent = a.Value
-            end)
 
             local SectionFrame = library:create("Frame", {
                 Name = "SectionFrame",
@@ -1995,14 +1969,6 @@ function library.new(library_title, cfg_location)
                             Color = ColorSequence.new{ColorSequenceKeypoint.new(0, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, MenuColors.MenuAccentFade)},
                             Rotation = 90,
                         }, SliderFrame)
-                        a:GetPropertyChangedSignal('Value'):Connect(function()
-                            UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, a.Value), ColorSequenceKeypoint.new(1, MenuColors.MenuAccentFade)}
-                            MenuColors.MenuAccent = a.Value
-                        end)
-                        b:GetPropertyChangedSignal('Value'):Connect(function()
-                            UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, b.Value)}
-                            MenuColors.MenuAccentFade = b.Value
-                        end)
 
                         local SliderValue = library:create("TextLabel", {
                             Name = "SliderValue",
