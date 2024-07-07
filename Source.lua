@@ -1,6 +1,6 @@
 local library = {}
 
--- Patch 0.21
+-- Patch 0.22
 
 local MenuColors = {
     ['MenuAccent'] = Color3.fromRGB(255, 255, 255),
@@ -19,7 +19,11 @@ local MenuBind = Enum.KeyCode.Insert
 local TweenService = game:GetService("TweenService")
 function library:tween(...) TweenService:Create(...):Play() end
 
+local runservice = game:GetService('RunService')
+local colorMain, colorFadeAccent, colorFadeAccent2 = nil, nil, nil
+
 local uis = game:GetService("UserInputService")
+
 
 function library:create(Object, Properties, Parent)
     local Obj = Instance.new(Object)
@@ -107,6 +111,17 @@ function library.SetMenuColor(MainColor, FadeColor)
         MenuColors.MenuAccentFade = FadeColor
     end)
     if b then print(b) end
+
+    function renderColor()
+        runservice.RenderStepped:Connect(function()
+            print('rendering')
+            if not colorMain and not colorFadeAccent and not colorFadeAccent2 then return end
+            colorMain.BorderColor3 = MenuColors.MenuAccent
+            colorFadeAccent.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))}
+            colorFadeAccent2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, MenuColors.MenuAccentFade)}
+        end)
+    end
+    coroutine.wrap(renderColor)()
 end
 
 function library.new(library_title, cfg_location)
@@ -223,6 +238,7 @@ function library.new(library_title, cfg_location)
         AutoButtonColor = false,
         Modal = true,
     }, ScreenGui)
+    colorMain = ImageLabel
 
     function menu.GetPosition()
         return ImageLabel.Position
@@ -403,6 +419,7 @@ function library.new(library_title, cfg_location)
             local UIGradient = library:create("UIGradient", {
                 Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))},
             }, SectionDecoration)
+            colorFadeAccent = UIGradient
 
             local SectionFrame = library:create("Frame", {
                 Name = "SectionFrame",
@@ -1969,6 +1986,7 @@ function library.new(library_title, cfg_location)
                             Color = ColorSequence.new{ColorSequenceKeypoint.new(0, MenuColors.MenuAccent), ColorSequenceKeypoint.new(1, MenuColors.MenuAccentFade)},
                             Rotation = 90,
                         }, SliderFrame)
+                        colorFadeAccent2 = UIGradient
 
                         local SliderValue = library:create("TextLabel", {
                             Name = "SliderValue",
