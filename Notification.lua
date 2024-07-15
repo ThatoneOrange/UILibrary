@@ -1,5 +1,5 @@
 local notify = {}
-
+--patch 1
 local TweenService = game:GetService('TweenService')
 
 notify.colors = {
@@ -50,8 +50,6 @@ function notify.notify(notification : string, duration : number)
     Notification.Position = UDim2.new(-5.17247081e-08, 0, 0, 0)
     Notification.Size = UDim2.new(4.97288132, 0, 0.0424836613, 0)
     Notification.Visible = false
-    local bounds = script.Parent.Notification.TextBounds
-    Notification.Size = UDim2.new(0, 0, 0.042, 0)
     local Notification_2 = Instance.new("TextLabel")
     Notification_2.Name = "Notification"
     Notification_2.Parent = Notification
@@ -69,6 +67,8 @@ function notify.notify(notification : string, duration : number)
     Notification_2.TextWrapped = true
     Notification_2.TextXAlignment = Enum.TextXAlignment.Center
     Notification_2.TextYAlignment = Enum.TextYAlignment.Center
+    local bounds = Notification_2.TextBounds
+    Notification.Size = UDim2.new(0, 0, 0.042, 0)
     local Top = Instance.new("Frame")
     local Bar = Instance.new("Frame")
     Top.Name = "Top"
