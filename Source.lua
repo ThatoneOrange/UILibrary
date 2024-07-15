@@ -1,6 +1,6 @@
 local library = {}
 
--- Patch 0.22
+-- Patch 0.23
 
 local MenuColors = {
     ['MenuAccent'] = Color3.fromRGB(255, 255, 255),
@@ -1327,6 +1327,15 @@ function library.new(library_title, cfg_location)
                                     v:Destroy()
                                 end
                             end 
+                            local options_num = #table
+                            if options_num >= 4 then
+                                DropdownScroll.Size = UDim2.new(0, 260, 0, 80)
+                                for i = 1, options_num do
+                                    DropdownScroll.CanvasSize = DropdownScroll.CanvasSize + UDim2.new(0, 0, 0, 20)
+                                end
+                            else
+                                DropdownScroll.Size = UDim2.new(0, 260, 0, 20 * options_num)
+                            end
                             for _,v in next, table do
                                 local Button = library:create("TextButton", {
                                     Name = v,
