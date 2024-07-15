@@ -1,5 +1,5 @@
 local notify = {}
---patch 1
+
 local TweenService = game:GetService('TweenService')
 
 notify.colors = {
@@ -85,6 +85,8 @@ function notify.notify(notification : string, duration : number)
     Bar.BorderSizePixel = 0
     Bar.Size = UDim2.new(1, 0, 1, 0)
 
+    Notification.Visible = true
+
     local TweenIn = TweenService:Create(Notification, TweenInfo.new(.25), {Size = UDim2.new(0, bounds.X + 25, 0.042, 0)})
     TweenIn:Play()
     TweenIn.Completed:Wait()
@@ -95,7 +97,7 @@ function notify.notify(notification : string, duration : number)
 
     local TweenOut = TweenService:Create(Notification, TweenInfo.new(.25), {Size = UDim2.new(0, 0, 0.042, 0)})
     TweenOut:Play()
-    TweenOut.Completed:Wait()
+    TweenOut.Completed:Wait(.5)
 
     Notification:Destroy()
 
