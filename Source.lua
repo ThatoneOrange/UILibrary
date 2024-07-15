@@ -1328,6 +1328,7 @@ function library.new(library_title, cfg_location)
                                 end
                             end 
                             local options_num = #table
+                            DropdownScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
                             if options_num >= 4 then
                                 DropdownScroll.Size = UDim2.new(0, 260, 0, 80)
                                 for i = 1, options_num do
