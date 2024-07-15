@@ -1260,6 +1260,7 @@ function library.new(library_title, cfg_location)
                         end
 
                         local dropdown_is_first = true
+
                         for _,v in next, data.options do
                             local Button = library:create("TextButton", {
                                 Name = v,
@@ -1319,6 +1320,74 @@ function library.new(library_title, cfg_location)
                                 dropdown_is_first = false
                             end
                         end
+
+                        function element:update(table)
+                            for i,v in pairs(DropdownScroll:GetChildren()) do
+                                if v:IsA('TextButton') then
+                                    v:Destroy()
+                                end
+                            end 
+                            for _,v in next, table do
+                                local Button = library:create("TextButton", {
+                                    Name = v,
+                                    BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                                    BorderColor3 = Color3.fromRGB(0, 0, 0),
+                                    BorderSizePixel = 0,
+                                    Position = UDim2.new(0, 0, 0, 20),
+                                    Size = UDim2.new(1, 0, 0, 20),
+                                    AutoButtonColor = false,
+                                    Font = Enum.Font.SourceSans,
+                                    Text = "",
+                                    ZIndex = 2,
+                                }, DropdownScroll)
+    
+                                local ButtonText = library:create("TextLabel", {
+                                    Name = "ButtonText",
+                                    BackgroundTransparency = 1,
+                                    Position = UDim2.new(0, 8, 0, 0),
+                                    Size = UDim2.new(0, 245, 1, 0),
+                                    Font = Enum.Font.Ubuntu,
+                                    Text = v,
+                                    TextColor3 = Color3.fromRGB(150, 150, 150),
+                                    TextSize = 14,
+                                    TextXAlignment = Enum.TextXAlignment.Left,
+                                    ZIndex = 2,
+                                }, Button)
+    
+                                local Decoration = library:create("Frame", {
+                                    Name = "Decoration",
+                                    BackgroundColor3 = MenuColors.MenuAccent,
+                                    BorderSizePixel = 0,
+                                    Size = UDim2.new(0, 1, 1, 0),
+                                    Visible = false,
+                                    ZIndex = 2,
+                                }, Button)
+    
+                                Button.MouseEnter:Connect(function()
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
+                                    Decoration.Visible = true
+                                end)
+                                Button.MouseLeave:Connect(function()
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                    Decoration.Visible = false
+                                end)
+                                Button.MouseButton1Down:Connect(function()
+                                    DropdownScroll.Visible = false
+                                    DropdownButtonText.Text = v
+                                    value.Dropdown = v
+    
+                                    library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                    library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+    
+                                    do_callback()
+                                end)
+    
+                                if dropdown_is_first then
+                                    dropdown_is_first = false
+                                end
+                            end  
+                        end
+
                         element:set_value(value, true)
                     elseif type == "Combo" then
                         Border.Size = Border.Size + UDim2.new(0, 0, 0, 45)
